@@ -70,5 +70,25 @@ describe("MyPromise", () => {
                 expect(functionToCallWhenPromiseRejects).toHaveBeenCalledWith("Rejected");
             });
         });
+        describe("after some time", () => {
+            describe("and the callback is registered before it rejects", () => {
+                beforeAll(() => {
+                    jest.useFakeTimers();
+                });
+                afterAll(() => {
+                    jest.useRealTimers();
+                });
+                it("should call the callback immediately", () => {
+                    const functionToCallWhenPromiseRejects = jest.fn();
+                    const executor = (resolve, reject) => {
+                        setTimeout(() => reject(), 1000);
+                    };
+                    const myPromise = new MyPromise(executor);
+                    myPromise.then(undefined, functionToCallWhenPromiseRejects)
+                    jest.runAllTimers();
+                    expect(functionToCallWhenPromiseRejects).toHaveBeenCalled();
+                })
+            })
+        })
     });
 });
