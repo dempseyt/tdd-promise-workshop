@@ -71,14 +71,14 @@ describe("MyPromise", () => {
             });
         });
         describe("after some time", () => {
+            beforeAll(() => {
+                jest.useFakeTimers();
+            });
+            afterAll(() => {
+                jest.useRealTimers();
+            });
             describe("and the callback is registered before it rejects", () => {
-                beforeAll(() => {
-                    jest.useFakeTimers();
-                });
-                afterAll(() => {
-                    jest.useRealTimers();
-                });
-                it("should call the callback immediately", () => {
+                it("should call the callback after it rejects", () => {
                     const functionToCallWhenPromiseRejects = jest.fn();
                     const executor = (resolve, reject) => {
                         setTimeout(() => reject(), 1000);
@@ -87,8 +87,22 @@ describe("MyPromise", () => {
                     myPromise.then(undefined, functionToCallWhenPromiseRejects)
                     jest.runAllTimers();
                     expect(functionToCallWhenPromiseRejects).toHaveBeenCalled();
-                })
-            })
-        })
+                });
+            });
+            describe("and the callback is registered after it rejects", () => {
+                it("should call the registered callback immediately", () => {
+                    const executor = (resolve, reject) => {
+                        setTimeout(() => {
+                            reject('Reject');
+                        }, 1000);
+                    };
+                    const myPromise = new MyPromise(executor);
+                    jest.runAllTimers();
+                    const functionToCallWhenPromiseRejects = jest.fn();
+                    myPromise.then(undefined, functionToCallWhenPromiseRejects);
+                    expect(functionToCallWhenPromiseRejects).toHaveBeenCalledWith('Reject');
+                });
+            });
+        });
     });
 });
