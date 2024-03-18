@@ -58,4 +58,17 @@ describe("MyPromise", () => {
             });
         });
     });
+    describe("given a promise that rejects", () => {
+        describe("immediately", () => {
+            it("calls the registered callback", () => {
+                const executor = (resolve, reject) => {
+                    reject("Rejected");
+                };
+                const myPromise = new MyPromise(executor);
+                const functionToCallWhenPromiseRejects = jest.fn();
+                myPromise.then(undefined, functionToCallWhenPromiseRejects);
+                expect(functionToCallWhenPromiseRejects).toHaveBeenCalledWith("Rejected");
+            });
+        });
+    });
 });
