@@ -104,5 +104,10 @@ describe("MyPromise", () => {
                 });
             });
         });
+        it("returns a promise that is immediately resolved to a value", () => {
+            const resolvedPromise = MyPromise.resolve("Resolved");
+            expect(resolvedPromise).toBeInstanceOf(MyPromise);
+            expect(resolvedPromise.state).toBe('FULFILLED_STATE');
+        })
     });
 });
