@@ -34,8 +34,16 @@ function MyPromise(executor = () => {}) {
         }
     };
 
-    
+
     this.state = PENDING_STATE;
     executor(this.functionToResolvePromise, this.functionToRejectPromise);
 }
+
+MyPromise.resolve = (result) => {
+    const executor = (functionToResolvePromise) => {
+        functionToResolvePromise(result);
+    };
+    return new MyPromise(executor);
+};
+
 export default MyPromise;
