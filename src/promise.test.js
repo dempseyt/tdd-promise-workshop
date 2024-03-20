@@ -139,9 +139,9 @@ describe("MyPromise", () => {
         });
         it("rejects if any promise rejects", () => {
             const arrayOfPromises = [
-                // MyPromise.resolve(1),
+                MyPromise.resolve(1),
                 MyPromise.reject("Rejected"),
-                // MyPromise.resolve(2)
+                MyPromise.resolve(2)
             ];
             const myPromise = MyPromise.all(arrayOfPromises);
             const rejectCallback = jest.fn();
@@ -149,6 +149,20 @@ describe("MyPromise", () => {
 
             expect(rejectCallback).toHaveBeenCalledWith("Rejected");
             expect(myPromise).toBeInstanceOf(MyPromise);
-        })
+        });
+        it("resolves as an iterable of results matching the order of promises in the iterable", () => {
+            jest.useFakeTimers();
+            const callback = jest.fn();
+            const promises = [
+                MyPromise.resolve(1),
+                new MyPromise((resolve) => setTimeout(() => resolve(2), 1000)),
+                MyPromise.resolve(3)
+            ];
+            const myPromise = MyPromise.all(promises);
+            myPromise.then(callback);
+            jest.runAllTimers();
+            expect(callback).toHaveBeenCalledWith([1, 2, 3]);
+            jest.useRealTimers();
+        });
     });
 });
