@@ -171,7 +171,7 @@ describe("MyPromise", () => {
             const callback = jest.fn();
             const newPromise = MyPromise.allSettled(arrayOfPromises);
             newPromise.then(callback);
-            expect(myPromise).toBeInstanceOf(MyPromise);
+            expect(newPromise).toBeInstanceOf(MyPromise);
             expect(callback).toHaveBeenCalledWith([]);
         })
     });

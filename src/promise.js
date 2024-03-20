@@ -68,7 +68,10 @@ MyPromise.all = function (arrayOfPromises) {
         });
     };
     return isRejected ? rejectedPromiseResult : MyPromise.resolve(arrayOfResults);
-    
+};
+
+MyPromise.allSettled = function (arrayOfPromises) {
+    return MyPromise.resolve([]);
 };
 
 export default MyPromise;
