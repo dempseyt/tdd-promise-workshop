@@ -54,7 +54,16 @@ MyPromise.reject = (result) => {
 }
 
 MyPromise.all = function (arrayOfPromises) {
-    return MyPromise.resolve([]);
+    // array of promise 
+    // I need each value from each promise (.then)
+    // arrayOfPromises.then()
+    const arrayOfResults = [];
+    for (let i = 0; i < arrayOfPromises.length; i++) {
+        arrayOfPromises[i].then((resolvedValue) => {
+            arrayOfResults.push(resolvedValue);
+        });
+    };
+    return MyPromise.resolve(arrayOfResults);
 };
 
 export default MyPromise;
