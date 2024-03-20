@@ -53,4 +53,8 @@ MyPromise.reject = (result) => {
     return new MyPromise(executor);
 }
 
+MyPromise.all = function (arrayOfPromises) {
+    return MyPromise.resolve([]);
+};
+
 export default MyPromise;
