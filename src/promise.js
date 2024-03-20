@@ -71,7 +71,18 @@ MyPromise.all = function (arrayOfPromises) {
 };
 
 MyPromise.allSettled = function (arrayOfPromises) {
-    return MyPromise.resolve([]);
+    const arrayOfResults = [];
+    for (let i = 0; i < arrayOfPromises.length; i++) {
+        arrayOfPromises[i].then(
+            (resolvedValue) => {
+                arrayOfResults[i] = {status: 'fulfilled', value: resolvedValue};
+            },
+            (rejectValue) => {
+                arrayOfResults[i] = {status: 'rejected', reason: rejectValue};
+            }
+        );
+    }
+    return MyPromise.resolve(arrayOfResults);
 };
 
 export default MyPromise;

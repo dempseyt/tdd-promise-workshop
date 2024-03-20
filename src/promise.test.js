@@ -177,7 +177,7 @@ describe("MyPromise", () => {
         it("resolves an array of results, both resolved and rejected", () => {
             const arrayOfPromises = [
                 MyPromise.resolve(1),
-                MyPromise.reject('Rejected')
+                MyPromise.reject('rejected')
             ]
             const callback = jest.fn();
             const myPromise = MyPromise.allSettled(arrayOfPromises);
