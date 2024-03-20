@@ -60,14 +60,14 @@ MyPromise.all = function (arrayOfPromises) {
 
     for (let i = 0; i < arrayOfPromises.length && !isRejected; i++) {
         arrayOfPromises[i].then((resolvedValue) => {
-            arrayOfResults.splice(i, 1, resolvedValue);
+            arrayOfResults[i] = resolvedValue;
         }, 
         (rejectValue) => {
             rejectedPromiseResult = MyPromise.reject(rejectValue);
             isRejected = true
         });
     };
-    return rejectedPromiseResult ? rejectedPromiseResult : MyPromise.resolve(arrayOfResults);
+    return isRejected ? rejectedPromiseResult : MyPromise.resolve(arrayOfResults);
     
 };
 
