@@ -186,7 +186,27 @@ describe("MyPromise", () => {
             expect(callback).toHaveBeenCalledWith([
                 {status: 'fulfilled', value: 1}, 
                 {status: 'rejected', reason: 'rejected'}
-            ])
+            ]);
+        });
+        it("resolves as an iterable of results matching the order of promises in the iterable", () => {
+            jest.useFakeTimers();
+            const promises = [
+                MyPromise.resolve(1),
+                new MyPromise((resolve, reject) => setTimeout(() => reject('reason1'), 1000)),
+                MyPromise.reject('reason2')
+            ];
+            const resultsArray = [
+                {status: 'fulfilled', value: 1},
+                {status: 'rejected', reason: 'reason1'},
+                {status: 'rejected', reason: 'reason2'}
+            ]
+            const myPromise = MyPromise.allSettled(promises);
+            const callback = jest.fn();
+            myPromise.then(callback);
+            jest.runAllTimers();
+            expect(myPromise).toBeInstanceOf(MyPromise);
+            expect(callback).toHaveBeenCalledWith(resultsArray);
+            jest.useRealTimers();
         });
     });
 });
