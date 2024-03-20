@@ -46,4 +46,11 @@ MyPromise.resolve = (result) => {
     return new MyPromise(executor);
 };
 
+MyPromise.reject = (result) => {
+    const executor = (functionToResolvePromise, functionToRejectPromise) => {
+        functionToRejectPromise(result);
+    };
+    return new MyPromise(executor);
+}
+
 export default MyPromise;
