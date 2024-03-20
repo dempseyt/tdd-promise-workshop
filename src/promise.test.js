@@ -111,4 +111,13 @@ describe("MyPromise", () => {
         expect(resolvedPromise.state).toBe('FULFILLED_STATE');
         expect(resolvedPromise.result).toBe('Resolved');
     });
+    it("returns a promise that is immediately rejected", () => {
+        const callback = jest.fn();
+        const rejectedPromise = MyPromise.reject("Rejected");
+        
+        rejectedPromise.then(undefined, callback);
+
+        expect(rejectedPromise).toBeInstanceOf(MyPromise);
+        expect(rejectedPromise.result).toBe('Rejected');
+    });
 });
